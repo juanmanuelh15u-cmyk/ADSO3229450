@@ -1,87 +1,71 @@
+// Función para el primer botón
 function fnGeo() {
-
-    let datoVariable = "";
-
-    datoVariable = document.getElementById("txtDato").value;
-
-    console.log("Dato: ", datoVariable);
-
-    fnSalidaParrafo(datoVariable);
-    fnAlerta(datoVariable);
-
+    let dato = document.getElementById("txtDato").value;
+    alert("Dato ingresado: " + dato);
+    
+    // Se pasa la variable 'dato' a las funciones externas
+    fuctionSalidaParrafo(dato);
+    fnalerta(dato);
 }
 
-function fnSalidaParrafo(dato){
-
-    document.getElementById("salida").innerHTML = dato;
-
-}
-
-function fnAlerta(dato){
-
-    alert(dato);
-
-}
-
-function fnCalculaRider(){
-
+// Función para la calculadora (Operaciones básicas)
+function fnCalculaRider() {
+    // 1. Obtener el primer número por su ID
     let num1 = Number(document.getElementById("txtNum1").value);
 
-    let num2 = Number(document.getElementsByClassName("TxtNum2")[0].value);
+    // 2. Obtener el segundo número por su CLASS (la primera coincidencia [0])
+    let num2 = Number(document.getElementsByClassName("txtNum2")[0].value);
 
-    let suma = num1 + num2;
+    // 3. Obtener la operación seleccionada
+    let operacion = document.getElementById("operacion").value;
 
-    console.log("Suma:", suma);
+    let resultado = 0;
 
-    document.getElementById("salida").innerHTML = "La suma es: " + suma;
+    // 4. Realizar el cálculo según la operación elegida
+    switch(operacion) {
+        case "sumar":
+            resultado = num1 + num2;
+            break;
+        case "restar":
+            resultado = num1 - num2;
+            break;
+        case "multiplicar":
+            resultado = num1 * num2;
+            break;
+        case "dividir":
+            // Validación para evitar división por cero
+            if (num2 === 0) {
+                alert("Error: No se puede dividir entre cero.");
+                return; // Detiene la función aquí
+            }
+            resultado = num1 / num2;
+            break;
+        case "modulo":
+            // Validación para evitar módulo por cero
+            if (num2 === 0) {
+                alert("Error: No se puede calcular el residuo dividiendo entre cero.");
+                return; 
+            }
+            resultado = num1 % num2; // Este es el residuo de la división
+            break;
+        default:
+            alert("Operación no válida");
+            return;
+    }
 
+    // 5. Mostrar el resultado en alerta
+    alert("El resultado de la operación es: " + resultado);
+    
+    // 6. Enviar el resultado al párrafo
+    fuctionSalidaParrafo(resultado);
 }
-function fnCalcularSeno() {
 
-    let angulo = 0;
-    let resultadoSeno = 0;
+// --- FUNCIONES AUXILIARES ---
 
-    angulo = Number(document.getElementById("txtAngulo").value);
-
-    // Math.sin trabaja en radianes
-    resultadoSeno = Math.sin(angulo * Math.PI / 180);
-
-    console.log("Ángulo:", angulo);
-    console.log("Seno:", resultadoSeno);
-
-    fnSalidaContenedorDivSeno(angulo, resultadoSeno);
-
+function fuctionSalidaParrafo(datoVariable) {
+    document.getElementById("pfosalida").innerHTML = "El resultado obtenido es: " + datoVariable;
 }
 
-function fnSalidaContenedorDivSeno(angulo, resultadoSeno) {
-
-    document.getElementById("divSeno").textContent =
-    "El seno de " + angulo + "° es: " + resultadoSeno;
-
-    function fnCalcularSenoCoseno(){
-
-    let numero = 0;
-    let resultadoSeno = 0;
-    let resultadoCoseno = 0;
-
-    numero = Number(document.getElementById("txtNumero").value);
-
-    resultadoSeno = Math.sin(numero);
-    resultadoCoseno = Math.cos(numero);
-
-    fnSalidaSenoCoseno(numero, resultadoSeno, resultadoCoseno);
-
-}
-
-function fnSalidaSenoCoseno(numero, resultadoSeno, resultadoCoseno){
-
-    document.getElementById("divResultado").textContent =
-    "Número: " + numero +
-    " | Seno: " + resultadoSeno +
-    " | Coseno: " + resultadoCoseno;
-let numero = Number(document.getElementById("txtNumero").value);
-
-let seno = Math.sin(numero);
-let coseno = Math.cos(numero);
-}
+function fnalerta(datoVariable) {
+    alert("El dato registrado/calculado fue: " + datoVariable);
 }
