@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universo Cuántico 3D - 15 Blend Modes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* LETRERO HOLOGRÁFICO REACTIVO */
+    .mini-card {
+      position: relative;
+      z-index: 10;
+      background: rgba(2, 4, 10, 0.82);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 14px 28px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 
+        0 0 30px rgba(0, 240, 255, 0.3),
+        inset 0 0 15px rgba(255, 0, 234, 0.2);
+      pointer-events: none;
+      transition: transform 0.1s ease-out;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #00ff88;
+      border-radius: 50%;
+      box-shadow: 0 0 14px #00ff88;
+      animation: pulse 1.2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .mini-card h1 {
+      font-size: 0.9rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, #00f0ff, #ff00ea, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+
+    .mini-card span {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.6);
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      padding-left: 12px;
+      letter-spacing: 1.5px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="quantumCanvas"></canvas>
+
+  <main class="mini-card" id="card">
+    <div class="live-dot"></div>
+    <h1>Bienvenidos a este diseño</h1>
+    <span>15 BLEND MODES</span>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('quantumCanvas');
+    const card = document.getElementById('card');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 15 MODOS DE FUSIÓN DE CSS Y CANVAS
+    const blendModes = [
+      'hue', 'saturation', 'color', 'luminosity', 'difference',
+      'exclusion', 'color-dodge', 'screen', 'color-burn', 'overlay',
+      'soft-light', 'hard-light', 'darken', 'lighten', 'multiply'
+    ];
+
+    const colors = [
+      '#ff0055', '#00f0ff', '#00ff88', '#ffe600', '#ff00ea',
+      '#7928ca', '#ff5722', '#00d2ff', '#2ed573', '#ff00aa'
+    ];
+
+    // 1. MANCHAS NEÓN (45 ORBES EN FLOTACIÓN)
+    const orbs = [];
+    blendModes.forEach((mode) => {
+      for (let i = 0; i < 3; i++) {
+        orbs.push({
+          mode: mode,
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          radius: Math.random() * 180 + 100,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          angle: Math.random() * Math.PI * 2
+        });
+      }
+    });
+
+    // 2. PARTÍCULAS EN HIPERESPACIO (200 ESTRELLAS)
+    const stars = Array.from({ length: 200 }, () => ({
+      x: (Math.random() - 0.5) * width * 2,
+      y: (Math.random() - 0.5) * height * 2,
+      z: Math.random() * width,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    }));
+
+    // 3. ONDAS EXPANSIVAS (SHOCKWAVES) AL HACER CLIC
+    const shockwaves = [];
+    window.addEventListener('click', (e) => {
+      shockwaves.push({
+        x: e.clientX,
+        y: e.clientY,
+        radius: 10,
+        maxRadius: 350,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1
+      });
+    });
+
+    // INTERACCIÓN MOUSE
+    const mouse = { x: width / 2, y: height / 2 };
+    const trail = [];
+    let autoCamAngle = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+
+      trail.push({
+        x: mouse.x,
+        y: mouse.y,
+        radius: Math.random() * 80 + 30,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: 1
+      });
+      if (trail.length > 25) trail.shift();
+    });
+
+    function render() {
+      autoCamAngle += 0.008;
+
+      // PARALLAX Y GIRO 3D DE PANTALLA
+      const xNorm = (mouse.x / width) - 0.5;
+      const yNorm = (mouse.y / height) - 0.5;
+
+      const camRotateX = (yNorm * -22) + (Math.sin(autoCamAngle) * 5);
+      const camRotateY = (xNorm * 22) + (Math.cos(autoCamAngle) * 5);
+
+      canvas.style.transform = `scale(1.18) rotateX(${camRotateX}deg) rotateY(${camRotateY}deg)`;
+      card.style.transform = `translate3d(${xNorm * 35}px, ${yNorm * 35}px, 80px)`;
+
+      // FONDO NEGRO CÓSMICO
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#010204';
+      ctx.fillRect(0, 0, width, height);
+
+      // A. RENDER DE HIPERESPACIO (ESTRELLAS EN VELOCIDAD)
+      ctx.fillStyle = '#ffffff';
+      stars.forEach((star) => {
+        star.z -= 4; // Velocidad hacia la cámara
+        if (star.z <= 0) star.z = width;
+
+        const k = 250 / star.z;
+        const px = star.x * k + width / 2;
+        const py = star.y * k + height / 2;
+
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
+          const size = Math.max(0.5, (1 - star.z / width) * 2.5);
+          ctx.globalCompositeOperation = 'screen';
+          ctx.fillStyle = star.color;
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      // B. RENDER DE LOS 45 ORBES CON 15 BLEND MODES
+      orbs.forEach((orb) => {
+        orb.angle += 0.01;
+        orb.x += orb.vx + Math.sin(orb.angle);
+        orb.y += orb.vy + Math.cos(orb.angle);
+
+        if (orb.x < -100 || orb.x > width + 100) orb.vx *= -1;
+        if (orb.y < -100 || orb.y > height + 100) orb.vy *= -1;
+
+        const dx = mouse.x - orb.x;
+        const dy = mouse.y - orb.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 380) {
+          orb.x += (dx / dist) * 2.8;
+          orb.y += (dy / dist) * 2.8;
+        }
+
+        ctx.globalCompositeOperation = orb.mode;
+        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius);
+        grad.addColorStop(0, orb.color);
+        grad.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // C. RENDER DE LA ESTELA DEL CURSOR
+      trail.forEach((t, i) => {
+        t.life -= 0.025;
+        if (t.life <= 0) {
+          trail.splice(i, 1);
+          return;
+        }
+        ctx.globalCompositeOperation = 'color-dodge';
+        const grad = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.radius * t.life);
+        grad.addColorStop(0, t.color);
+        grad.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.radius * t.life, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // D. RENDER DE ONDAS EXPANSIVAS (SHOCKWAVES AL CLIC)
+      shockwaves.forEach((wave, i) => {
+        wave.radius += 8;
+        wave.alpha -= 0.02;
+
+        if (wave.alpha <= 0 || wave.radius >= wave.maxRadius) {
+          shockwaves.splice(i, 1);
+          return;
+        }
+
+        ctx.globalCompositeOperation = 'color-dodge';
+        ctx.strokeStyle = wave.color;
+        ctx.lineWidth = 4 * wave.alpha;
+        ctx.beginPath();
+        ctx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+</body>
+</html>

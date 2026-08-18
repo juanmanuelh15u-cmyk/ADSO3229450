@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acelerador Cuántico 3D - Nivel Dios</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1400px;
+      cursor: crosshair;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    /* HUD CYBERPUNK 3D */
+    .quantum-hud {
+      position: relative;
+      z-index: 10;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(0, 240, 255, 0.6);
+      padding: 20px 40px;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 
+        0 0 60px rgba(0, 240, 255, 0.4),
+        0 0 100px rgba(255, 0, 234, 0.2),
+        inset 0 0 25px rgba(0, 240, 255, 0.3);
+      pointer-events: none;
+      transform: translateZ(160px);
+    }
+
+    .singularity-core {
+      width: 14px;
+      height: 14px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 
+        0 0 15px #00f0ff,
+        0 0 30px #ff00ea,
+        0 0 45px #00ff88;
+      animation: coreOverdrive 0.8s infinite alternate ease-in-out;
+    }
+
+    @keyframes coreOverdrive {
+      0% { transform: scale(0.7); filter: hue-rotate(0deg); }
+      100% { transform: scale(1.5); filter: hue-rotate(360deg); }
+    }
+
+    .quantum-hud h1 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, #00f0ff, #ff00ea, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+      text-shadow: 0 0 40px rgba(0, 240, 255, 0.8);
+    }
+
+    .quantum-hud span {
+      font-size: 0.8rem;
+      color: rgba(0, 240, 255, 0.9);
+      border-left: 1px solid rgba(255, 255, 255, 0.25);
+      padding-left: 16px;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .instructions {
+      position: absolute;
+      bottom: 25px;
+      z-index: 10;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="hyperCanvas"></canvas>
+
+  <main class="quantum-hud" id="hud">
+    <div class="singularity-core"></div>
+    <h1>Bienvenidos a este diseño</h1>
+    <span>SINGULARITY GOD MODE</span>
+  </main>
+
+  <div class="instructions">Haz clic y arrastra para colapsar el núcleo espacial y activar síntesis FM</div>
+
+  <script>
+    const canvas = document.getElementById('hyperCanvas');
+    const hud = document.getElementById('hud');
+    const ctx = canvas.getContext('2d');
+
+    let width, height, centerX, centerY;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      centerX = width / 2;
+      centerY = height / 2;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // SINTETIZADOR CINEMÁTICO SUB-BASS (WEB AUDIO API)
+    let audioCtx = null;
+    let mainOsc, modOsc, filter, gainNode;
+
+    function initAudio() {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      mainOsc = audioCtx.createOscillator();
+      modOsc = audioCtx.createOscillator();
+      filter = audioCtx.createBiquadFilter();
+      gainNode = audioCtx.createGain();
+
+      mainOsc.type = 'sawtooth';
+      modOsc.type = 'sine';
+
+      mainOsc.frequency.setValueAtTime(40, audioCtx.currentTime); // Frecuencia Sub-Bass
+      modOsc.frequency.setValueAtTime(4, audioCtx.currentTime);   // Modulación LFO
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(300, audioCtx.currentTime);
+      filter.Q.setValueAtTime(8, audioCtx.currentTime);
+
+      gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+      modOsc.connect(mainOsc.frequency);
+      mainOsc.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      mainOsc.start();
+      modOsc.start();
+    }
+
+    // PALETAS CÓSMICAS
+    const colors = ['#ff0055', '#00f0ff', '#00ff88', '#ffe600', '#ff00ea', '#7928ca', '#00d2ff', '#ffffff'];
+
+    // 1. GEOMETRÍA SAGRADA 3D (VERTICES DE ICOSAEDRO)
+    const t = (1.0 + Math.sqrt(5.0)) / 2.0;
+    const icoNodesBase = [
+      [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+      [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+      [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1]
+    ];
+
+    // Escalar Icosaedro
+    const icoNodes = icoNodesBase.map(v => [v[0] * 120, v[1] * 120, v[2] * 120]);
+
+    // Aristas del Icosaedro
+    const icoEdges = [];
+    for (let i = 0; i < icoNodes.length; i++) {
+      for (let j = i + 1; j < icoNodes.length; j++) {
+        const d = Math.hypot(
+          icoNodesBase[i][0] - icoNodesBase[j][0],
+          icoNodesBase[i][1] - icoNodesBase[j][1],
+          icoNodesBase[i][2] - icoNodesBase[j][2]
+        );
+        if (Math.abs(d - 2.0) < 0.1) icoEdges.push([i, j]);
+      }
+    }
+
+    // 2. CAMPO DE HIPER-ESPACIO (800 PARTÍCULAS CUÁNTICAS)
+    const particles = Array.from({ length: 800 }, () => ({
+      x: (Math.random() - 0.5) * width * 4,
+      y: (Math.random() - 0.5) * height * 4,
+      z: Math.random() * width,
+      ox: 0, oy: 0,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      size: Math.random() * 3 + 1
+    }));
+
+    // INTERACCIÓN MOUSE Y FÍSICA
+    const mouse = { x: centerX, y: centerY, targetX: centerX, targetY: centerY, isDown: false };
+    let rotX = 0, rotY = 0, time = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+
+      if (audioCtx && filter) {
+        const distFromCenter = Math.hypot(e.clientX - centerX, e.clientY - centerY);
+        const freq = Math.max(80, 1200 - distFromCenter * 1.8);
+        filter.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.05);
+      }
+    });
+
+    window.addEventListener('mousedown', () => { mouse.isDown = true; initAudio(); });
+    window.addEventListener('mouseup', () => { mouse.isDown = false; });
+
+    // ROTACIÓN DE VECTORES EN 3D
+    function rotate3D(x, y, z, ax, ay) {
+      // Rotar Y
+      let x1 = x * Math.cos(ay) + z * Math.sin(ay);
+      let z1 = -x * Math.sin(ay) + z * Math.cos(ay);
+      // Rotar X
+      let y2 = y * Math.cos(ax) - z1 * Math.sin(ax);
+      let z2 = y * Math.sin(ax) + z1 * Math.cos(ax);
+      return [x1, y2, z2];
+    }
+
+    function render() {
+      time += 0.015;
+
+      // Suavizado Lerp de cámara
+      mouse.x += (mouse.targetX - mouse.x) * 0.08;
+      mouse.y += (mouse.targetY - mouse.y) * 0.08;
+
+      const normX = (mouse.x / width) - 0.5;
+      const normY = (mouse.y / height) - 0.5;
+
+      rotX += 0.01 + (mouse.isDown ? 0.04 : 0);
+      rotY += 0.015 + (mouse.isDown ? 0.04 : 0);
+
+      // Inclinación 3D del lienzo
+      const camRotX = (normY * -40);
+      const camRotY = (normX * 40);
+
+      canvas.style.transform = `scale(1.2) rotateX(${camRotX}deg) rotateY(${camRotY}deg)`;
+      hud.style.transform = `translate3d(${normX * 70}px, ${normY * 70}px, 180px) rotateX(${camRotX * 0.2}deg) rotateY(${camRotY * 0.2}deg)`;
+
+      // LIMPIEZA DE CANVAS
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#000002';
+      ctx.fillRect(0, 0, width, height);
+
+      // A. RENDER DE NÚCLEO DE ICOSAEDRO 3D
+      ctx.save();
+      ctx.translate(centerX, centerY);
+
+      const projectedNodes = icoNodes.map(node => {
+        const [rx, ry, rz] = rotate3D(node[0], node[1], node[2], rotX, rotY);
+        const fov = 400 / (400 + rz);
+        return [rx * fov, ry * fov, fov, rz];
+      });
+
+      // Dibujar Aristas neón
+      ctx.globalCompositeOperation = 'color-dodge';
+      ctx.lineWidth = mouse.isDown ? 4 : 2;
+
+      icoEdges.forEach(([i, j]) => {
+        const n1 = projectedNodes[i];
+        const n2 = projectedNodes[j];
+
+        const grad = ctx.createLinearGradient(n1[0], n1[1], n2[0], n2[1]);
+        grad.addColorStop(0, '#00f0ff');
+        grad.addColorStop(0.5, '#ff00ea');
+        grad.addColorStop(1, '#00ff88');
+
+        ctx.strokeStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(n1[0], n1[1]);
+        ctx.lineTo(n2[0], n2[1]);
+        ctx.stroke();
+      });
+
+      // Vértices Brillantes
+      projectedNodes.forEach(n => {
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(n[0], n[1], Math.max(1, 4 * n[2]), 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore();
+
+      // B. RENDER DE PARTÍCULAS CUÁNTICAS Y LENTE GRAVITACIONAL
+      particles.forEach(p => {
+        // Velocidad acelerada al presionar el clic
+        p.z -= (mouse.isDown ? 25 : 8) + normY * -5;
+
+        if (p.z <= 0) {
+          p.z = width;
+          p.x = (Math.random() - 0.5) * width * 4;
+          p.y = (Math.random() - 0.5) * height * 4;
+        }
+
+        let k = 350 / p.z;
+        let px = p.x * k + centerX;
+        let py = p.y * k + centerY;
+
+        // Atracción Gravitacional de la Singularidad hacia el Mouse
+        const dx = mouse.x - px;
+        const dy = mouse.y - py;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < 300) {
+          const force = (300 - dist) / 300;
+          px += (dx / dist) * force * 50;
+          py += (dy / dist) * force * 50;
+        }
+
+        if (px >= 0 && px <= width && py >= 0 && py <= height) {
+          const alpha = (1 - p.z / width);
+          const size = Math.max(0.2, p.size * k);
+
+          ctx.globalCompositeOperation = 'screen';
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = alpha;
+          ctx.beginPath();
+          ctx.arc(px, py, size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      });
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+</body>
+</html>
