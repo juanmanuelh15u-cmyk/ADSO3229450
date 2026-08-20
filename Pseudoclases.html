@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario - Doble Password con RTL en Focus</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .form-card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 440px;
+      border-top: 4px solid #6366f1;
+    }
+
+    .controls-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .controls-bar button {
+      background: #e5e7eb;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .controls-bar button:hover {
+      background: #6366f1;
+      color: white;
+    }
+
+    fieldset {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: #374151;
+      padding: 0 6px;
+    }
+
+    .control-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+      accent-color: #6366f1;
+    }
+
+    /* --- BLOQUES DE CONTRASEÑA --- */
+    .password-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #f9fafb;
+      align-items: flex-start;
+      border-left: 4px solid #10b981;
+      margin-bottom: 12px;
+      transition: all 0.4s ease;
+    }
+
+    /* FILA DE INPUT Y BADGE */
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    input[type="password"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      outline: none;
+      background-color: #ffffff;
+    }
+
+    .status-badge {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 6px;
+      background-color: #e5e7eb;
+      color: #4b5563;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    /* Validaciones :invalid / :valid */
+    input[type="password"]:invalid { border-color: #ef4444; }
+    input[type="password"]:invalid + .status-badge {
+      background-color: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+    }
+
+    input[type="password"]:valid { border-color: #10b981; }
+    input[type="password"]:valid + .status-badge {
+      background-color: #d1fae5;
+      color: #059669;
+      border: 1px solid #6ee7b7;
+    }
+
+    /* Pseudoclase :dir() aislada por cada wrapper */
+    .input-wrapper:dir(ltr) {
+      flex-direction: row;
+    }
+
+    .input-wrapper:dir(rtl) {
+      flex-direction: row-reverse;
+    }
+
+    /* Cambio de fondo en el bloque que recibe el Focus */
+    .password-section:focus-within {
+      background-color: #e0e7ff;
+      border-left-color: #4338ca;
+    }
+
+    /* BOTÓN SUBMIT FIJO A LA IZQUIERDA */
+    .btn-submit {
+      width: auto;
+      padding: 8px 18px;
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    /* Pseudoclase :lang() */
+    .form-card:lang(es) .txt-lang:not(:lang(es)) { display: none; }
+    .form-card:lang(en) .txt-lang:not(:lang(en)) { display: none; }
+    .form-card:lang(fr) .txt-lang:not(:lang(fr)) { display: none; }
+  </style>
+</head>
+<body>
+
+  <form class="form-card" id="miFormulario" lang="es" onsubmit="event.preventDefault();">
+    
+    <div class="controls-bar">
+      <button type="button" onclick="cambiarIdioma('es')">ES</button>
+      <button type="button" onclick="cambiarIdioma('en')">EN</button>
+      <button type="button" onclick="cambiarIdioma('fr')">FR</button>
+    </div>
+
+    <h2>
+      <span class="txt-lang" lang="es">Configuración</span>
+      <span class="txt-lang" lang="en">Settings</span>
+      <span class="txt-lang" lang="fr">Paramètres</span>
+    </h2>
+
+    <fieldset>
+      <legend>
+        <span class="txt-lang" lang="es">Seguridad</span>
+        <span class="txt-lang" lang="en">Security</span>
+        <span class="txt-lang" lang="fr">Sécurité</span>
+      </legend>
+
+      <!-- CAMPO 1: CONTRASEÑA -->
+      <div class="password-section">
+        <label for="pass1">
+          <span class="txt-lang" lang="es">Contraseña:</span>
+          <span class="txt-lang" lang="en">Password:</span>
+          <span class="txt-lang" lang="fr">Mot de passe:</span>
+        </label>
+
+        <div class="input-wrapper" id="inputWrapper1" dir="ltr">
+          <input 
+            type="password" 
+            id="pass1" 
+            required 
+            minlength="6" 
+            placeholder="Min. 6 chars"
+            onfocus="document.getElementById('inputWrapper1').setAttribute('dir', 'rtl')"
+            onblur="document.getElementById('inputWrapper1').setAttribute('dir', 'ltr')"
+          >
+          <span class="status-badge">
+            <span class="txt-lang" lang="es">Requerido (Min 6)</span>
+            <span class="txt-lang" lang="en">Required (Min 6)</span>
+            <span class="txt-lang" lang="fr">Requis (Min 6)</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- CAMPO 2: CONFIRMAR CONTRASEÑA (DUPLICADO ABAJO) -->
+      <div class="password-section">
+        <label for="pass2">
+          <span class="txt-lang" lang="es">Confirmar Contraseña:</span>
+          <span class="txt-lang" lang="en">Confirm Password:</span>
+          <span class="txt-lang" lang="fr">Confirmer mot de passe:</span>
+        </label>
+
+        <div class="input-wrapper" id="inputWrapper2" dir="ltr">
+          <input 
+            type="password" 
+            id="pass2" 
+            required 
+            minlength="6" 
+            placeholder="Min. 6 chars"
+            onfocus="document.getElementById('inputWrapper2').setAttribute('dir', 'rtl')"
+            onblur="document.getElementById('inputWrapper2').setAttribute('dir', 'ltr')"
+          >
+          <span class="status-badge">
+            <span class="txt-lang" lang="es">Requerido (Min 6)</span>
+            <span class="txt-lang" lang="en">Required (Min 6)</span>
+            <span class="txt-lang" lang="fr">Requis (Min 6)</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Botón de Enviar fijo a la izquierda -->
+      <button type="submit" class="btn-submit">
+        <span class="txt-lang" lang="es">Enviar</span>
+        <span class="txt-lang" lang="en">Submit</span>
+        <span class="txt-lang" lang="fr">Soumettre</span>
+      </button>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        <span class="txt-lang" lang="es">Suscripción</span>
+        <span class="txt-lang" lang="en">Subscription</span>
+        <span class="txt-lang" lang="fr">Abonnement</span>
+      </legend>
+      
+      <label class="control-label">
+        <input type="radio" name="plan" value="free" checked>
+        <span>
+          <span class="txt-lang" lang="es">Plan Gratuito</span>
+          <span class="txt-lang" lang="en">Free Plan</span>
+          <span class="txt-lang" lang="fr">Plan Gratuit</span>
+        </span>
+      </label>
+
+      <label class="control-label">
+        <input type="radio" name="plan" value="pro">
+        <span>
+          <span class="txt-lang" lang="es">Plan Pro</span>
+          <span class="txt-lang" lang="en">Pro Plan</span>
+          <span class="txt-lang" lang="fr">Plan Pro</span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>
+        <span class="txt-lang" lang="es">Opciones</span>
+        <span class="txt-lang" lang="en">Options</span>
+        <span class="txt-lang" lang="fr">Options</span>
+      </legend>
+
+      <label class="control-label">
+        <input type="checkbox" name="terms" checked>
+        <span>
+          <span class="txt-lang" lang="es">Acepto los términos</span>
+          <span class="txt-lang" lang="en">I accept the terms</span>
+          <span class="txt-lang" lang="fr">J'accepte les conditions</span>
+        </span>
+      </label>
+    </fieldset>
+
+  </form>
+
+  <script>
+    function cambiarIdioma(lang) {
+      document.getElementById('miFormulario').setAttribute('lang', lang);
+    }
+  </script>
+
+</body>
+</html>
