@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamer Neumorphic UI - Múltiples Imágenes y Sombras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    body {
+      background-color: #121826;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* CONTENEDOR PRINCIPAL - NEUMORFISMO EXTERIOR */
+    .form-card {
+      background-color: #121826;
+      padding: 40px;
+      border-radius: 28px;
+      width: 100%;
+      max-width: 480px;
+      
+      box-shadow: 
+        12px 12px 24px #0a0d15,
+        -12px -12px 24px #1a2337;
+        
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .form-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        16px 16px 28px #080b12,
+        -16px -16px 28px #1c253a,
+        0 0 25px rgba(0, 240, 255, 0.12);
+    }
+
+    /* 1. PRIMERA IMAGEN: AVATAR SUPERIOR (OUTER BOX-SHADOW + DROP-SHADOW) */
+    .avatar-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #121826;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      outline: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+
+      /* Box-shadow exterior */
+      box-shadow: 
+        6px 6px 14px #0a0d15,
+        -6px -6px 14px #1a2337;
+
+      transition: all 0.3s ease;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+
+      outline: none;
+      border: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: transparent;
+
+      /* Drop-shadow en la silueta */
+      filter: drop-shadow(0px 0px 8px rgba(0, 240, 255, 0.6))
+              drop-shadow(3px 5px 6px rgba(0, 0, 0, 0.8));
+
+      transition: all 0.3s ease;
+    }
+
+    .avatar-wrapper:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 
+        8px 8px 18px #080b12,
+        -8px -8px 18px #1c253a,
+        0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
+    .avatar-wrapper:hover .avatar-img {
+      filter: drop-shadow(0px 0px 12px rgba(255, 0, 85, 0.8));
+    }
+
+    /* 2. SEGUNDA IMAGEN: INSIGNIA / ITEM CON BOX-SHADOW INSET */
+    .inset-badge-container {
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      background-color: #121826;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+
+      /* BOX-SHADOW INSET (Marco o bisel hundido) */
+      box-shadow: 
+        inset 6px 6px 12px #0a0d15,
+        inset -6px -6px 12px #1a2337;
+
+      transition: all 0.3s ease;
+    }
+
+    .badge-img-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background-color: #121826;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 6px;
+      flex-shrink: 0;
+
+      /* BOX-SHADOW INSET PROFUNDO DENTRO DEL CONTENEDOR DE LA IMAGEN */
+      box-shadow: 
+        inset 4px 4px 8px #080b12,
+        inset -4px -4px 8px #1c253a,
+        inset 0 0 6px rgba(255, 0, 85, 0.3);
+
+      transition: all 0.3s ease;
+    }
+
+    .badge-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+
+      /* Sin bordes ni marcos de selección */
+      outline: none;
+      border: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: transparent;
+
+      transition: all 0.3s ease;
+    }
+
+    .inset-badge-info h4 {
+      color: #00f0ff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.5);
+    }
+
+    .inset-badge-info p {
+      color: #8a99ad;
+      font-size: 0.8rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .inset-badge-container:hover {
+      transform: scale(1.01);
+      box-shadow: 
+        inset 7px 7px 14px #080b12,
+        inset -7px -7px 14px #1c253a,
+        inset 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    .inset-badge-container:hover .badge-img-wrapper {
+      box-shadow: 
+        inset 4px 4px 8px #080b12,
+        inset -4px -4px 8px #1c253a,
+        inset 0 0 10px rgba(0, 240, 255, 0.6);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-header h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00f0ff;
+      font-size: 1.7rem;
+      letter-spacing: 2px;
+      text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 240, 255, 0.7);
+    }
+
+    .form-header p {
+      color: #8a99ad;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-group label.main-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #cbd5e1;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    /* INPUTS DE TEXTO */
+    .form-group input[type="text"] {
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background-color: #121826;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.88rem;
+      color: #00f0ff;
+      outline: none;
+
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.6);
+
+      box-shadow: 
+        inset 5px 5px 10px #0a0d15,
+        inset -5px -5px 10px #1a2337;
+
+      transition: all 0.3s ease;
+    }
+
+    .form-group input[type="text"]:focus {
+      transform: translateX(4px) scale(1.01);
+      box-shadow: 
+        inset 4px 4px 8px #080b12,
+        inset -4px -4px 8px #1c253a,
+        inset 0 0 12px rgba(0, 240, 255, 0.6);
+    }
+
+    /* SELECT MÚLTIPLE */
+    .form-group select[multiple] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 14px;
+      background-color: #121826;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      outline: none;
+
+      box-shadow: 
+        inset 5px 5px 10px #0a0d15,
+        inset -5px -5px 10px #1a2337;
+
+      transition: all 0.3s ease;
+    }
+
+    .form-group select[multiple] option {
+      padding: 8px 12px;
+      margin-bottom: 4px;
+      border-radius: 8px;
+      background-color: #121826;
+      color: #8a99ad;
+      transition: all 0.2s ease;
+    }
+
+    .form-group select[multiple] option:checked {
+      background-color: #1a2337;
+      color: #00f0ff;
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.7);
+    }
+
+    /* CONTENEDORES DE OPINIONES Y CONTROLES */
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .custom-control {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      color: #8a99ad;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      transition: all 0.25s ease;
+    }
+
+    .custom-control:hover {
+      color: #00f0ff;
+      transform: translateX(6px) scale(1.02);
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    }
+
+    .custom-control input {
+      display: none;
+    }
+
+    .control-indicator {
+      width: 22px;
+      height: 22px;
+      margin-right: 12px;
+      background-color: #121826;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+
+      box-shadow: 
+        inset 3px 3px 6px #0a0d15,
+        inset -3px -3px 6px #1a2337;
+
+      transition: all 0.25s ease;
+    }
+
+    .checkbox-control .control-indicator {
+      border-radius: 6px;
+    }
+
+    .radio-control .control-indicator {
+      border-radius: 50%;
+    }
+
+    .control-indicator::after {
+      content: '';
+      display: none;
+    }
+
+    .checkbox-control .control-indicator::after {
+      width: 5px;
+      height: 10px;
+      border: solid #00f0ff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    .radio-control .control-indicator::after {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ff0055;
+      box-shadow: 0 0 8px #ff0055;
+    }
+
+    .custom-control input:checked + .control-indicator {
+      box-shadow: 
+        3px 3px 6px #0a0d15,
+        -3px -3px 6px #1a2337,
+        0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    .radio-control input:checked + .control-indicator {
+      box-shadow: 
+        3px 3px 6px #0a0d15,
+        -3px -3px 6px #1a2337,
+        0 0 10px rgba(255, 0, 85, 0.4);
+    }
+
+    .custom-control input:checked + .control-indicator::after {
+      display: block;
+    }
+
+    /* BOTÓN SUBMIT */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      margin-top: 15px;
+      background-color: #121826;
+      color: #ff0055;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+
+      text-shadow: 
+        1px 1px 2px rgba(0, 0, 0, 0.9),
+        0 0 8px rgba(255, 0, 85, 0.6);
+
+      box-shadow: 
+        6px 6px 14px #0a0d15,
+        -6px -6px 14px #1a2337;
+
+      transition: all 0.25s ease;
+    }
+
+    .btn-submit:hover {
+      color: #00f0ff;
+      transform: translate(3px, -3px) scale(1.03);
+
+      text-shadow: 
+        1px 1px 2px rgba(0, 0, 0, 0.9),
+        0 0 12px rgba(0, 240, 255, 0.8);
+
+      box-shadow: 
+        10px 10px 20px #080b12,
+        -10px -10px 20px #1c253a,
+        0 0 20px rgba(0, 240, 255, 0.4);
+    }
+
+    .btn-submit:active {
+      transform: translate(0px, 2px) scale(0.97);
+      box-shadow: 
+        inset 5px 5px 10px #0a0d15,
+        inset -5px -5px 10px #1a2337,
+        inset 0 0 10px rgba(255, 0, 85, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-card">
+    
+    <!-- 1. PRIMERA IMAGEN (AVATAR EN BUCLE SUPERIOR CON DROP-SHADOW + OUTER SHADOW) -->
+    <div class="avatar-container">
+      <div class="avatar-wrapper">
+        <img class="avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=CyberGamer" alt="Avatar Gamer">
+      </div>
+    </div>
+
+    <div class="form-header">
+      <h2>PLAYER CONFIG</h2>
+      <p>Custom Gamer Settings</p>
+    </div>
+
+    <!-- 2. SEGUNDA IMAGEN (INSIGNIA DE RANGO CON BOX-SHADOW INSET) -->
+    <div class="inset-badge-container">
+      <div class="badge-img-wrapper">
+        <img class="badge-img" src="https://api.dicebear.com/7.x/icons/svg?seed=RankBadge" alt="Badge Rank">
+      </div>
+      <div class="inset-badge-info">
+        <h4>RANK: DIAMOND III</h4>
+        <p>Temporada Activa 2026</p>
+      </div>
+    </div>
+
+    <form>
+      <div class="form-group">
+        <label class="main-label" for="user">Gamertag</label>
+        <input type="text" id="user" placeholder="CYBER_KNIGHT" required autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="main-label">Rol de Combate (Radio buttons)</label>
+        <div class="options-group">
+          <label class="custom-control radio-control">
+            <input type="radio" name="role" value="assault" checked>
+            <span class="control-indicator"></span>
+            Asalto (DPS)
+          </label>
+          <label class="custom-control radio-control">
+            <input type="radio" name="role" value="sniper">
+            <span class="control-indicator"></span>
+            Francotirador (Sniper)
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="main-label" for="weapons">Equipamiento (Select Múltiple)</label>
+        <select id="weapons" multiple size="3">
+          <option value="rifle" selected>Rifle de Plasma</option>
+          <option value="shield">Escudo Neón</option>
+          <option value="grenade" selected>Granada EMP</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="main-label">Ajustes del Sistema (Checkboxes)</label>
+        <div class="options-group">
+          <label class="custom-control checkbox-control">
+            <input type="checkbox" name="settings" value="crossplay" checked>
+            <span class="control-indicator"></span>
+            Habilitar Crossplay
+          </label>
+          <label class="custom-control checkbox-control">
+            <input type="checkbox" name="settings" value="raytracing">
+            <span class="control-indicator"></span>
+            Activar Ray Tracing
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">GUARDAR CAMBIOS</button>
+    </form>
+  </div>
+
+</body>
+</html>

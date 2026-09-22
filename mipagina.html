@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylelesheet" href="micss.css">
+    <title>Llamado a funciones y salida de JS a HTML</title>
+
+</head>
+
+<body>
+
+    <h1>Llamado a funciones y salida de JS a HTML</h1>
+
+    <hr>
+
+    <h2>Función Básica</h2>
+
+    <label for="txtDato">
+        Dato:
+    </label>
+
+    <input type="text" id="txtDato" placeholder="Ingrese un dato">
+
+    <button onclick="fnGeo()">
+        Llama Función
+    </button>
+
+    <br><br>
+
+    <p id="pfoSalida"></p>
+
+    <hr>
+
+    <h2>Suma, Resta y Multiplicación</h2>
+
+    <label for="txtNum1">
+        Número 1:
+    </label>
+
+    <input type="number" id="txtNum1" class="txtNum1" value="5">
+
+    <br><br>
+
+    <label for="txtNum2">
+        Número 2:
+    </label>
+
+    <input type="number" id="txtNum2" class="txtNum2" value="2">
+
+    <br><br>
+
+    <button onclick="fnCalculaRider()">
+        Calcular
+    </button>
+
+    <br><br>
+
+    <div id="divSalidaSuma"></div>
+
+    <br>
+
+    <div class="divSalidaResta"></div>
+
+    <br>
+
+    <div class="divSalidaMultiplicacion"></div>
+
+    <script src="miscript.js"></script>
+
+</body>
+
+</html>

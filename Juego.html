@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Trivia CSS - 3 Vidas con Animaciones</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d1117;
+      color: #f0f6fc;
+      display: flex;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+
+    .game-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* CONTADOR DE VIDAS */
+    .lives-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .heart {
+      font-size: 24px;
+      transition: all 0.3s ease;
+    }
+
+    /* 1. PSEUDOCLASES :nth-child(odd) Y :nth-child(even) */
+    .heart:nth-child(odd) { transform: scale(1.1); }
+    .heart:nth-child(even) { filter: drop-shadow(0 0 5px #ef4444); }
+
+    /* 2. PSEUDOCLASE :last-of-type */
+    .heart:last-of-type { border-bottom: 2px solid #ef4444; }
+
+    /* PREGUNTAS */
+    .question-block {
+      background: #21262d;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      border-left: 4px solid #58a6ff;
+    }
+
+    .question-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #58a6ff;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .btn-option {
+      padding: 10px 14px;
+      background: #30363d;
+      border: 1px solid #8b949e;
+      color: #f0f6fc;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .btn-option:hover {
+      background: #8b949e;
+      color: #0d1117;
+    }
+
+    /* 3. PSEUDOCLASE :only-child EN UN BADGE DE NIVEL */
+    .badge-container {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .badge-container span:only-child {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #a371f7;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(163, 113, 247, 0.5);
+    }
+
+    /* 4. PSEUDOCLASE :empty EN CONSOLA DE ESTADO */
+    .status-console {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .status-console:empty { display: none; }
+
+    /* ANIMACIÓN DE VICTORIA */
+    .status-console.win {
+      background: #116329;
+      color: #3fb950;
+      border: 2px solid #2ea043;
+      animation: popVictory 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+                 glowNeon 1.5s infinite alternate ease-in-out;
+    }
+
+    @keyframes popVictory {
+      0% { transform: scale(0.3); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes glowNeon {
+      0% { box-shadow: 0 0 5px #2ea043, inset 0 0 5px #2ea043; }
+      100% { box-shadow: 0 0 20px #3fb950, inset 0 0 10px #3fb950; }
+    }
+
+    /* ANIMACIÓN DE DERROTA */
+    .status-console.lose {
+      background: #781212;
+      color: #f85149;
+      border: 2px solid #da3633;
+      animation: shakeGame 0.5s ease-in-out, glowRed 1s infinite alternate ease-in-out;
+    }
+
+    @keyframes shakeGame {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-12px) rotate(-1deg); }
+      40%, 80% { transform: translateX(12px) rotate(1deg); }
+    }
+
+    @keyframes glowRed {
+      0% { box-shadow: 0 0 5px #da3633; }
+      100% { box-shadow: 0 0 25px #f85149, inset 0 0 10px #781212; }
+    }
+
+    /* CONFETI */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      border-radius: 2px;
+      animation: fall 2.5s linear infinite;
+    }
+
+    @keyframes fall {
+      0% { top: -10px; transform: translateX(0) rotate(0deg); opacity: 1; }
+      100% { top: 100%; transform: translateX(100px) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-card" id="cardContainer">
+    <h2 style="text-align:center; margin-top:0; color:#58a6ff;">🎮 TRIVIA CSS: 3 VIDAS</h2>
+    
+    <div class="lives-container" id="livesBox">
+      <span class="heart" id="h1">❤️</span>
+      <span class="heart" id="h2">❤️</span>
+      <span class="heart" id="h3">❤️</span>
+    </div>
+
+    <div id="quizContainer">
+      
+      <!-- PREGUNTA 1 -->
+      <div class="question-block" id="q1">
+        <div class="question-title">1. ¿Qué selecciona :nth-child(even)?</div>
+        <div class="options-grid">
+          <button class="btn-option" onclick="respuestaIncorrecta()">A) Solo el primer hijo del contenedor</button>
+          <button class="btn-option" onclick="respuestaCorrecta(1)">B) Posiciones PARES (2, 4, 6...)</button>
+          <button class="btn-option" onclick="respuestaIncorrecta()">C) Elementos con clases duplicadas</button>
+        </div>
+      </div>
+
+      <!-- PREGUNTA 2 -->
+      <div class="question-block" id="q2" style="display:none;">
+        <div class="question-title">2. ¿Cuándo actúa la pseudoclase :only-child?</div>
+        <div class="options-grid">
+          <button class="btn-option" onclick="respuestaIncorrecta()">A) Cuando el elemento no contiene nada de texto</button>
+          <button class="btn-option" onclick="respuestaCorrecta(2)">B) Cuando es el ÚNICO hijo directo dentro de su contenedor</button>
+          <button class="btn-option" onclick="respuestaIncorrecta()">C) Cuando es la última etiqueta del archivo HTML</button>
+        </div>
+        <!-- Aplica :only-child en el span -->
+        <div class="badge-container">
+          <span>⚡ MODO EVALUACIÓN</span>
+        </div>
+      </div>
+
+      <!-- PREGUNTA 3 -->
+      <div class="question-block" id="q3" style="display:none;">
+        <div class="question-title">3. ¿Qué evalúa la pseudoclase :empty?</div>
+        <div class="options-grid">
+          <button class="btn-option" onclick="respuestaIncorrecta()">A) Si el input tiene espacios en blanco</button>
+          <button class="btn-option" onclick="respuestaCorrecta(3)">B) Si el elemento NO contiene texto ni etiquetas adentro</button>
+          <button class="btn-option" onclick="respuestaIncorrecta()">C) Oculta automáticamente las imágenes rotas</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANTALLA ESTADO CON :empty -->
+    <div class="status-console" id="console"></div>
+  </div>
+
+  <script>
+    let vidas = 3;
+
+    function respuestaIncorrecta() {
+      if (vidas > 0) {
+        document.getElementById(`h${vidas}`).innerText = "🖤";
+        vidas--;
+      }
+
+      if (vidas === 0) {
+        document.getElementById('quizContainer').style.display = 'none';
+        const consoleBox = document.getElementById('console');
+        consoleBox.className = "status-console lose";
+        consoleBox.innerText = "💥 ¡HAS PERDIDO! Te quedaste sin vidas. Recarga la página para reintentar.";
+      } else {
+        alert(`❌ ¡Respuesta incorrecta! Te quedan ${vidas} vidas.`);
+      }
+    }
+
+    function respuestaCorrecta(paso) {
+      if (paso === 1) {
+        document.getElementById('q1').style.display = 'none';
+        document.getElementById('q2').style.display = 'block';
+      } else if (paso === 2) {
+        document.getElementById('q2').style.display = 'none';
+        document.getElementById('q3').style.display = 'block';
+      } else if (paso === 3) {
+        document.getElementById('quizContainer').style.display = 'none';
+        const consoleBox = document.getElementById('console');
+        consoleBox.className = "status-console win";
+        consoleBox.innerText = "🏆 ¡VICTORIA ABSOLUTA! Completaste las 3 preguntas con " + vidas + " vida(s) restante(s).";
+        
+        lanzarConfeti();
+      }
+    }
+
+    function lanzarConfeti() {
+      const card = document.getElementById('cardContainer');
+      const colores = ['#3fb950', '#58a6ff', '#a371f7', '#f0883e', '#f1e05a'];
+      for (let i = 0; i < 35; i++) {
+        const confeti = document.createElement('div');
+        confeti.className = 'confetti';
+        confeti.style.left = Math.random() * 100 + '%';
+        confeti.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+        confeti.style.animationDelay = Math.random() * 2 + 's';
+        card.appendChild(confeti);
+      }
+    }
+  </script>
+
+</body>
+</html>

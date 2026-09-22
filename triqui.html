@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tablero Triqui Fiel a la Imagen</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f0ece1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* CONTENEDOR CON LA INCLINACIÓN EXACTA (GIRO LIGERO A LA DERECHA) */
+    .board-perspective {
+      transform: rotate(2.8deg) skewX(-1.5deg) scaleY(0.96);
+    }
+
+    /* MARCO BASE DE MADERA */
+    .board-container {
+      background-color: #d1b892;
+      padding: 16px 22px 22px 18px; /* Asimetría en padding para simular la perspectiva */
+      border-radius: 42px;
+      width: 630px;
+      height: 360px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    /* BORDES NEGROS DE LA REJILLA */
+    .tic-tac-toe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+      height: 100%;
+      background-color: #1a1612; /* Borde oscuro profundo */
+      padding: 6px;
+      border: 4px solid #1a1612;
+      border-radius: 8px;
+    }
+
+    /* CASILLAS INDIVIDUALES */
+    .cell {
+      background-color: #caa87b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* FICHA 'O' (BLANCA) */
+    .piece-o {
+      width: 140px;
+      height: 90px;
+      border: 20px solid #e1ebf0;
+      border-radius: 50%;
+    }
+
+    /* FICHA 'X' (AZUL) */
+    .piece-x {
+      position: relative;
+      width: 145px;
+      height: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .piece-x::before,
+    .piece-x::after {
+      content: '';
+      position: absolute;
+      width: 105%;
+      height: 28px;
+      background-color: #008be3;
+      border-radius: 16px;
+    }
+
+    .piece-x::before {
+      transform: rotate(25deg);
+    }
+
+    .piece-x::after {
+      transform: rotate(-25deg);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="board-perspective">
+    <div class="board-container">
+      <div class="tic-tac-toe-grid">
+        
+        <!-- FILA 1: O | X | O -->
+        <div class="cell"><div class="piece-o"></div></div>
+        <div class="cell"><div class="piece-x"></div></div>
+        <div class="cell"><div class="piece-o"></div></div>
+
+        <!-- FILA 2: O | X | X -->
+        <div class="cell"><div class="piece-o"></div></div>
+        <div class="cell"><div class="piece-x"></div></div>
+        <div class="cell"><div class="piece-x"></div></div>
+
+        <!-- FILA 3: O | X | X -->
+        <div class="cell"><div class="piece-o"></div></div>
+        <div class="cell"><div class="piece-x"></div></div>
+        <div class="cell"><div class="piece-x"></div></div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Limpio con Pseudoclases</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    input[type="text"], input[type="email"] {
+      padding: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      outline: none;
+      background: #ffffff;
+    }
+
+    /* 1. IMPARES: :nth-child(odd) */
+    .form-group:nth-child(odd) {
+      background-color: #e0e7ff;
+      border-left: 5px solid #6366f1;
+    }
+
+    /* 2. PARES: :nth-child(even) */
+    .form-group:nth-child(even) {
+      background-color: #d1fae5;
+      border-left: 5px solid #10b981;
+    }
+
+    /* 3. ÚLTIMO ELEMENTO DE SU TIPO: :last-of-type */
+    .form-group:last-of-type {
+      border-left: 5px solid #3b82f6;
+    }
+
+    /* ====================================================
+       4. PSEUDOCLASE :only-child
+       Aplica al checkbox/texto por ser el único hijo de su contenedor
+    ==================================================== */
+    .single-option label:only-child {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background-color: #f3f4f6;
+      border-radius: 6px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    /* ====================================================
+       5. PSEUDOCLASE :empty
+       Si el mensaje de ayuda/error debajo del input está vacío, NO ocupa espacio
+    ==================================================== */
+    .helper-text {
+      font-size: 11px;
+      color: #dc2626;
+      margin-top: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .helper-text:empty {
+      display: none;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 10px;
+      background-color: #374151;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <form class="form-container">
+    
+    <h2>Registro de Usuario</h2>
+
+    <!-- Fila 1 (Impar) -->
+    <div class="form-group">
+      <label>1. Nombre:</label>
+      <input type="text" placeholder="Ingresa tu nombre">
+    </div>
+
+    <!-- Fila 2 (Par) -->
+    <div class="form-group">
+      <label>2. Apellido:</label>
+      <input type="text" placeholder="Ingresa tu apellido">
+    </div>
+
+    <!-- Fila 3: ÚLTIMO .form-group (:last-of-type) -->
+    <div class="form-group">
+      <label>3. Correo Electrónico:</label>
+      <input type="email" placeholder="correo@ejemplo.com" id="emailInput" onblur="validarEmail()">
+      
+      <!-- CONTENEDOR CON :empty (Si no hay error, no se muestra nada) -->
+      <div class="helper-text" id="emailError"></div>
+    </div>
+
+    <!-- Contenedor con UN SOLO HIJO (:only-child) -->
+    <div class="single-option">
+      <label>
+        <input type="checkbox" required> Acepto los términos y condiciones
+      </label>
+    </div>
+
+    <button type="submit" class="btn-submit">Enviar Formulario</button>
+
+  </form>
+
+  <script>
+    function validarEmail() {
+      const input = document.getElementById('emailInput');
+      const errorDiv = document.getElementById('emailError');
+      
+      // Si el campo está vacío al salir del foco, inserta el texto (se desactiva :empty y aparece el mensaje)
+      if (input.value.trim() === '') {
+        errorDiv.innerText = 'El campo de correo no puede estar vacío.';
+      } else {
+        // Si escribe algo, vacía la div (se activa :empty y se oculta)
+        errorDiv.innerText = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
