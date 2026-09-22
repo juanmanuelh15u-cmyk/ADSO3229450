@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia de Baile - Sabor y Ritmo</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        /* 1. HEADER */
+        header {
+            background-color: #1a1a1a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #b30000;
+        }
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: #b30000;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        .social-icons {
+            font-size: 1.2rem;
+            letter-spacing: 10px;
+        }
+
+        /* 2. NAV */
+        nav {
+            background-color: #0b0b0b;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 25px;
+            border-bottom: 3px solid #333;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        nav a:hover {
+            color: #b30000;
+        }
+
+        /* 3. DIV ID="SLIDER" */
+        #slider {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            border-bottom: 4px solid #b30000;
+        }
+
+        /* 4. SECTION PRINCIPAL (Clases de Baile) */
+        .seccion-principal {
+            background-color: #d4af37; /* Tono ocre/dorado elegante */
+            margin: 20px;
+            padding: 20px;
+            border-radius: 6px;
+            color: #000;
+        }
+        .seccion-principal h2 {
+            margin-top: 0;
+            color: #111;
+            border-bottom: 2px solid #fff;
+            padding-bottom: 8px;
+        }
+        .articulo-flex {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .articulo-flex img {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* 5. SECTION DE CONTACTO E INFORMACIÓN */
+        .seccion-info {
+            background-color: #1b1b1b;
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 6px;
+        }
+        .caja-articulo {
+            background-color: #262626;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border-left: 5px solid #b30000;
+        }
+        .caja-articulo h2 {
+            font-size: 1.2rem;
+            color: #d4af37;
+            margin-top: 0;
+        }
+
+        /* 6. FOOTER */
+        footer {
+            background-color: #000;
+            padding: 20px 30px;
+            border-top: 3px solid #222;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER: Encabezado -->
+    <header>
+        <div class="logo">ACADEMIA DE BAILE - RITMO & CLASE</div>
+        <div class="social-icons">f 📸 ✉</div>
+    </header>
+
+    <!-- NAV: Menú de Navegación -->
+    <nav>
+        <a href="#inicio">INICIO</a>
+        <a href="#clases">CLASES</a>
+        <a href="#nosotros">NOSOTROS</a>
+        <a href="#contacto">CONTACTO</a>
+    </nav>
+
+    <!-- DIV ID="SLIDER": Banner Principal -->
+    <div id="slider">
+        ¡Aprende a bailar con los mejores instructores!
+    </div>
+
+    <!-- SECTION PRINCIPAL -->
+    <section class="seccion-principal">
+        <h2>CLASES DE SALSA Y RITMOS LATINOS</h2>
+        
+        <article class="articulo-flex">
+            <!-- Imagen ilustrativa de baile -->
+            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=400&q=80" alt="Pareja bailando salsa">
+            <div>
+                <h3>Técnica, Pasos Básicos y Estilo en Pareja</h3>
+                <p>Descubre nuestra metodología exclusiva. Desde nivel cero hasta avanzado, enfocados en la marcación de la clave, giros perfectos, conexión en pareja y mucha cadencia en la pista de baile.</p>
+            </div>
+        </article>
+    </section>
+
+    <!-- SECTION DE CONTACTO E INFORMACIÓN ADICIONAL -->
+    <section class="seccion-info">
+        
+        <!-- ARTICLE 1: Contacto -->
+        <article class="caja-articulo">
+            <h2>CONTACTO & UBICACIÓN</h2>
+            <p><strong>Dirección:</strong> Calle Principal / Centro de la ciudad</p>
+            <p><strong>Teléfono / WhatsApp:</strong> +57 300 123 4567</p>
+            <p><strong>Horarios:</strong> Lunes a Sábado de 2:00 PM a 9:00 PM</p>
+        </article>
+
+        <!-- ARTICLE 2: Información pedagógica -->
+        <article class="caja-articulo">
+            <h2>METODOLOGÍA DE ENSEÑANZA</h2>
+            <p>Adaptación pedagógica a tu ritmo: se dedica aproximadamente un 15% del tiempo de la clase al aprendizaje de lenguaje musical. Cuando el alumno posee el nivel instrumental suficiente, se adapta el aprendizaje a sus propios gustos (popular, clásica, salsa, etc.). Consideramos prioritario el gusto personal de cada alumno.</p>
+        </article>
+
+    </section>
+
+    <!-- FOOTER: Pie de página -->
+    <footer>
+        <div>Diseño de página: academiaderitmo.com</div>
+        <div class="social-icons">f 📸 ✉</div>
+    </footer>
+
+</body>
+</html>
